@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<tool-setup>
+  <required tool_id="portal_pdflatex"
+      class="Products.RhaptosPDFLatexTool.PDFLatexTool.PDFLatexTool"/>
+</tool-setup>
+
