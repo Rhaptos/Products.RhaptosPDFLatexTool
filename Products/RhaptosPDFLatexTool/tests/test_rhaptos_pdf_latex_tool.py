@@ -24,20 +24,30 @@ $Id: $
 """
 
 
+from Products.RhaptosTest import config
 import Products.RhaptosPDFLatexTool
+config.products_to_load_zcml = [('configure.zcml', Products.RhaptosPDFLatexTool),]
+config.products_to_install = ['RhaptosPDFLatexTool']
 
-from Products.RhaptosTest.base import RhaptosTestCase
+from Products.CMFCore.utils import getToolByName
+from Products.RhaptosTest import base
 
 
-class TestRhaptosPDFLatexTool(RhaptosTestCase):
+PATHNAME = './src/Products.RhaptosPDFLatexTool/Products/RhaptosPDFLatexTool/tests/test_dir'
+FILENAME = 'test_file.txt'
 
-    products_to_load_zcml = [('configure.zcml', Products.RhaptosPDFLatexTool),]
 
-    def setUp(self):
-        RhaptosTestCase.setUp(self)
+class TestRhaptosPDFLatexTool(base.RhaptosTestCase):
+
+    def afterSetUp(self):
+        self.pdf_latex_tool = getToolByName(self.portal, 'portal_pdflatex')
+
+    def beforeTearDown(self):
+        pass
 
     def test_pdf_latex_tool(self):
-        self.assertEqual(1, 1)
+        return
+        pdf = self.pdf_latex_tool.convertFSDirToPDF(PATHNAME, FILENAME)
 
 
 def test_suite():
