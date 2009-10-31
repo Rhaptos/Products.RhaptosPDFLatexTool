@@ -26,10 +26,17 @@ $Id: $
 
 from Products.RhaptosTest import config
 import Products.RhaptosPDFLatexTool
-config.products_to_load_zcml = [('configure.zcml', Products.RhaptosPDFLatexTool),]
-config.products_to_install = ['RhaptosPDFLatexTool']
+import Products.FSImportTool
+config.products_to_load_zcml = [
+    ('configure.zcml', Products.RhaptosPDFLatexTool),
+    ('configure.zcml', Products.FSImportTool),
+]
+config.products_to_install = ['RhaptosPDFLatexTool', 'FSImportTool',]
+config.products_extension_profiles = ['Products.FSImportTool:default']
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFDefault.Document import Document
+from Products.PloneTestCase import PloneTestCase
 from Products.RhaptosTest import base
 
 
@@ -40,14 +47,17 @@ FILENAME = 'test_file.txt'
 class TestRhaptosPDFLatexTool(base.RhaptosTestCase):
 
     def afterSetUp(self):
+        PloneTestCase.installProduct('FSImportTool')
         self.pdf_latex_tool = getToolByName(self.portal, 'portal_pdflatex')
+        self.doc = Document('foo bar')
 
     def beforeTearDown(self):
         pass
 
     def test_pdf_latex_tool(self):
-        return
-        pdf = self.pdf_latex_tool.convertFSDirToPDF(PATHNAME, FILENAME)
+        #pdf = self.pdf_latex_tool.convertObjectToPDF(self.doc)
+        #pdf = self.pdf_latex_tool.convertFSDirToPDF(PATHNAME, FILENAME)
+        pass
 
 
 def test_suite():
