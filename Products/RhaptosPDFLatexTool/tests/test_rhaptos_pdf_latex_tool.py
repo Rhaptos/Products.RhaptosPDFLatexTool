@@ -49,9 +49,11 @@ class TestRhaptosPDFLatexTool(base.RhaptosTestCase):
     def afterSetUp(self):
         PloneTestCase.installProduct('FSImportTool')
         self.pdf_latex_tool = getToolByName(self.portal, 'portal_pdflatex')
-        self.doc = Document('foo bar')
-        # TODO:  Save self.doc in the Plone site.  The later manipulations are
-        # going to require persistent attributes on self.doc.
+
+        # PloneTestCase already gives us a folder, so within that folder,
+        # create a document and a collection to version.
+        self.folder.invokeFactory('Document', 'doc')
+        self.doc = self.folder.doc
 
     def beforeTearDown(self):
         pass
