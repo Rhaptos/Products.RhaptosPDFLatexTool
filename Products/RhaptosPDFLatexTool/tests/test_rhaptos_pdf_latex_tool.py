@@ -25,14 +25,20 @@ $Id: $
 
 
 from Products.RhaptosTest import config
+import Products.RhaptosContent
 import Products.RhaptosPDFLatexTool
 import Products.FSImportTool
 config.products_to_load_zcml = [
+    ('configure.zcml', Products.RhaptosContent),
     ('configure.zcml', Products.RhaptosPDFLatexTool),
     ('configure.zcml', Products.FSImportTool),
 ]
-config.products_to_install = ['RhaptosPDFLatexTool', 'FSImportTool',]
-config.products_extension_profiles = ['Products.FSImportTool:default']
+config.products_to_install = [
+    'RhaptosContent', 'RhaptosPDFLatexTool', 'FSImportTool',
+]
+config.products_extension_profiles = [
+    'Products.RhaptosContent:default', 'Products.FSImportTool:default',
+]
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.Document import Document
@@ -58,9 +64,12 @@ class TestRhaptosPDFLatexTool(base.RhaptosTestCase):
     def beforeTearDown(self):
         pass
 
-    def test_pdf_latex_tool(self):
-        #pdf = self.pdf_latex_tool.convertObjectToPDF(self.doc)
+    def test_pdf_latex_tool_on_dir(self):
         #pdf = self.pdf_latex_tool.convertFSDirToPDF(PATHNAME, FILENAME)
+        pass
+
+    def test_pdf_latex_tool_on_obj(self):
+        #pdf = self.pdf_latex_tool.convertObjectToPDF(self.doc)
         pass
 
 
