@@ -59,6 +59,8 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         fs_tool.exportToFS(tempdir, object)
 
         export = object.module_export_cnxml()
+        if type(export) is unicode:
+            export = export.encode('utf-8')
         export_file = open(os.path.join(tempdir, object.getId(), 'export.cnxml'), 'wb')
         export_file.write(export)
         export_file.close()
@@ -75,28 +77,14 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         # canonical name for module_export_template file
         os.rename(os.path.join(path, filename), os.path.join(path, 'module.mxt'))
 
-        ## this might want to be refactored with AsyncPrint/Collection.triggerPrint at some point
+        ## this might want to be refactored with Collection.triggerPrint at some point
 
-        # look up makefile params on AsyncPrinter object
+        # look up makefile params on print tool
         # we don't visit a remote server, so this is not quite correct: we assume a local AsyncPrint for config
         # if not available, use Makefile-encoded values
-        p_tool=getToolByName(self,'portal_properties')
-        configsheet = getattr(p_tool, 'rhaptos_collection_print_config', None)
-        servicepath = configsheet and configsheet.servicepath or "/RCPrinter"
-        try:
-            service = self.restrictedTraverse(servicepath)
-        except KeyError:
-            try:   # maybe its acquirable in the Plone Site somewhere
-                service = self.restrictedTraverse('/'.join(servicepath.split('/')[1:]))
-            except KeyError:
-                service = None
-        if service:
-            makefile = service.getMakefile()
-            host = service.getHost()
-        else: # our best guesses...
-            from Products.RhaptosCollection.config import GLOBALS as RCGLOBALS
-            makefile = "%s/printing/Makefile" % package_home(RCGLOBALS)
-            #host = self.absolute_url().split('/')[2].split(':')[1]
+        printtool = getToolByName(self,'rhaptos_print')
+        host = printtool.getHost()
+        makefile = printtool.getMakefile()
         makefiledir = os.path.dirname(makefile)
         makefile = "%s/module_print.mak" % makefiledir
 
@@ -110,7 +98,7 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         f.write(now.isoformat()+"\n")
         env = os.environ
         env['PRINT_DIR'] = makefiledir
-        if service: env['HOST'] = host
+        env['HOST'] = host
         subprocess.call(['make', '-f', 'module_print.mak', '-e', 'module.pdf'], cwd=path, env=env,
                         stdout=f, stderr=subprocess.STDOUT)
         f.write(now.isoformat()+"\n")

@@ -1,3 +1,10 @@
+RhaptosPDFLatexTool-0.13
+  - collection-structure-redesign-1 (Oct. 22, 2009)
+    - product_name deprecation warning fixed en passant
+    - handle possible unicode CNXML
+    - move printing parameter fetching from AsyncPrint (now removed) to print_tool
+       (further simplified by print service look up no longer necessary)
+
 RhaptosPDFLatexTool-0.12.1
   - quickperf (30 Sept 2008)
     - add better logging to module printing (add a make.log and zLOG entries)

@@ -19,6 +19,5 @@ tools = ( PDFLatexTool.PDFLatexTool,)
 def initialize(context):
     utils.ToolInit('PDFLatex Tool',
                     tools = tools,
-                    product_name = 'RhaptosPDFLatexTool',
                     icon='tool.gif' 
                     ).initialize( context )
