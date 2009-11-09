@@ -84,8 +84,19 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         # if not available, use Makefile-encoded values
         printtool = getToolByName(self,'rhaptos_print')
         host = printtool.getHost()
-        makefile = printtool.getMakefile()
-        makefiledir = os.path.dirname(makefile)
+      
+        env = os.environ
+        env['HOST'] = host
+        
+        # Should be setup inside zope.conf on Zope client
+        if not env.has_key('PRINT_DIR'):
+            # BBB
+            makefile = printtool.getMakefile()
+            makefiledir = os.path.dirname(makefile)
+            env['PRINT_DIR'] = makefiledir
+        else:
+            makefiledir = env['PRINT_DIR']
+        
         makefile = "%s/module_print.mak" % makefiledir
 
         # copy makefile into tempdir
@@ -96,9 +107,6 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         now = datetime.now()
         zLOG.LOG('RhaptosPDFLatexTool',0, "module printing starts in tempdir %s at %s" % (path, now) )
         f.write(now.isoformat()+"\n")
-        env = os.environ
-        env['PRINT_DIR'] = makefiledir
-        env['HOST'] = host
         subprocess.call(['make', '-f', 'module_print.mak', '-e', 'module.pdf'], cwd=path, env=env,
                         stdout=f, stderr=subprocess.STDOUT)
         f.write(now.isoformat()+"\n")
