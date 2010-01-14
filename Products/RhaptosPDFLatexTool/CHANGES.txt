@@ -1,0 +1,56 @@
+RhaptosPDFLatexTool-0.13
+  - collection-structure-redesign-1 (Oct. 22, 2009)
+    - product_name deprecation warning fixed en passant
+    - handle possible unicode CNXML
+    - move printing parameter fetching from AsyncPrint (now removed) to print_tool
+       (further simplified by print service look up no longer necessary)
+
+RhaptosPDFLatexTool-0.12.1
+  - quickperf (30 Sept 2008)
+    - add better logging to module printing (add a make.log and zLOG entries)
+
+PDFLatexTool-0.12
+  - change module printing to be makefile-based, like collection printing
+
+PDFLatexTool-0.11
+  - Suppress new module_export_template content in module PDF
+
+PDFLatexTool-0.10
+  - addition of optional roles (currently Editor and Translator)
+
+PDFLatexTool-0.9
+  - i18n Translation Support
+
+PDFLatexTool-0.8.1
+  - Fixed handling of ':=', long left arrow, long right arrow, left-right arrow
+  - Fixed spacing issues around rendered 'cite' elements
+  - quote/src/@src that doesn't begin with '#' no longer breaks PDF generation
+
+PDFLatexTool-0.8
+  - Removed parameters from the printing process
+  - Updated Printing XSL to pull metadata from the new export format
+
+PDFLatexTool-0.7
+  - Fixed problem with extra '}' in 'mi' elements with 'mathcolor' attribute
+  - Handle pre-escaped '{' and '}'
+  - Added support for math \digamma character
+
+PDFLatexTool-0.6
+  - Fixed up licensing
+  - Renamed Product
+
+PDFLatexTool-0.5
+  - Added mapping from character reference &#xEEF0; to 
+    LaTeX command \jmath in www/cnxml.xsl
+
+PDFLatexTool-0.4
+  - Fixes for backslash and inline code display
+
+PDFLatexTool-0.3
+  - Fixes for various image printing problems
+
+PDFLatexTool-0.2
+  - Moved stylesheets and printing code here
+
+PDFLatexTool-0.1
+  - Initial release
