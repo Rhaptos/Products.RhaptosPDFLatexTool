@@ -1,3 +1,6 @@
+RhaptosPDFLatexTool-0.14
+  - generic setup refactor. Rhaptos 2.0 release
+
 RhaptosPDFLatexTool-0.13
   - collection-structure-redesign-1 (Oct. 22, 2009)
     - product_name deprecation warning fixed en passant
