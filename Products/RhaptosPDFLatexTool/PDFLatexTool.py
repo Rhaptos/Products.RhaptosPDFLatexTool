@@ -83,11 +83,22 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         # we don't visit a remote server, so this is not quite correct: we assume a local AsyncPrint for config
         # if not available, use Makefile-encoded values
         printtool = getToolByName(self,'rhaptos_print')
+        portal = self.portal_url.getPortalObject()
+        
         host = printtool.getHost()
-      
+        if host.startswith('http://'):
+            host = host[7:]
+
+        project_name = portal.Title()
+        project_short_name = project_name
+        if project_name == 'Connexions':
+              project_name = 'The Connexions Project'
+
         env = os.environ
         env['HOST'] = host
-        
+        env['PROJECT_NAME'] = project_name
+        env['PROJECT_SHORT_NAME'] = project_short_name
+
         # Should be setup inside zope.conf on Zope client
         if not env.has_key('PRINT_DIR'):
             # BBB
