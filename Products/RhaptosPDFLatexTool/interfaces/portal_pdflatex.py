@@ -3,12 +3,7 @@
 
 """ File system import interface"""
 
-from Interface import Attribute
-try:
-    from Interface import Interface
-except ImportError:
-    # for Zope versions before 2.6.0
-    from Interface import Base as Interface
+from zope.interface import Attribute, Interface
 
 class portal_pdflatex(Interface):
     """Defines an interface for a tool that converts content to a PDF file"""
