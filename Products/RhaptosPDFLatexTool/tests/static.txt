@@ -11,6 +11,7 @@ being correctly implemented::
     True
     >>> PDFLatexTool.meta_type == 'PDFLatex Tool'
     True
-    >>> type(PDFLatexTool.__implements__)
-    <class 'Interface._InterfaceClass.Interface'>
+    >>> from zope.interface import implementedBy
+    >>> list(implementedBy(PDFLatexTool))
+    [<class 'Interface._InterfaceClass.Interface'>]
 
