@@ -22,7 +22,7 @@ from Globals import InitializeClass, package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.CMFCorePermissions import View, ManagePortal
+from Products.CMFCore.permissions import View, ManagePortal
 from Products.CNXMLDocument import XMLService
 
 from interfaces.portal_pdflatex import portal_pdflatex as IPDFLatexTool
