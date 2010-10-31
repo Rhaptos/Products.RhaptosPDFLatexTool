@@ -11,6 +11,8 @@ License Version 2 (GPL).  See LICENSE.txt for details.
 import os
 import re
 import commands
+
+from zope.interface import implements
 import zLOG
 import AccessControl
 import tempfile
@@ -25,8 +27,11 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import View, ManagePortal
 from Products.CNXMLDocument import XMLService
 
+
 from interfaces.portal_pdflatex import portal_pdflatex as IPDFLatexTool
 from cStringIO import StringIO
+
+from zope.interface import implements
 
 from datetime import datetime   # for logging only
 
@@ -35,7 +40,7 @@ class PDFLatexError(Exception):
 
 class PDFLatexTool(UniqueObject, SimpleItem):
 
-    __implements__ = (IPDFLatexTool)
+    implements(IPDFLatexTool)
 
     id = 'portal_pdflatex'
     meta_type = 'PDFLatex Tool'
