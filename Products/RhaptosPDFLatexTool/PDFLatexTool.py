@@ -55,6 +55,7 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         Convert the given object to a PDF file, possible using its subjects as necessary
         """
         fs_tool = getToolByName(self, 'portal_fsimport')
+
         tempdir = tempfile.mkdtemp()
         fs_tool.exportToFS(tempdir, object)
 
@@ -98,6 +99,9 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         env['HOST'] = host
         env['PROJECT_NAME'] = project_name
         env['PROJECT_SHORT_NAME'] = project_short_name
+        env['EPUB_DIR'] = printtool.getEpubDir()
+
+        script_location = 'SCRIPTSDIR' in env and env['SCRIPTSDIR'] or '.'
 
         # Should be setup inside zope.conf on Zope client
         if not env.has_key('PRINT_DIR'):
@@ -118,7 +122,7 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         now = datetime.now()
         zLOG.LOG('RhaptosPDFLatexTool',0, "module printing starts in tempdir %s at %s" % (path, now) )
         f.write(now.isoformat()+"\n")
-        subprocess.call(['make', '-f', 'module_print.mak', '-e', 'module.pdf'], cwd=path, env=env,
+        subprocess.call(['sh', '%s/module2pdf.sh' % script_location, 'module.pdf'], cwd=path, env=env,
                         stdout=f, stderr=subprocess.STDOUT)
         f.write(now.isoformat()+"\n")
         f.close()
