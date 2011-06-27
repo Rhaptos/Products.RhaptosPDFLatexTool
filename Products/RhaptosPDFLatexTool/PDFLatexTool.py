@@ -50,7 +50,7 @@ class PDFLatexTool(UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'manage_overview')
     manage_overview = PageTemplateFile('zpt/explainPDFLatexTool', globals() )
 
-    def convertObjectToPDF(self, object, **params):
+    def convertObjectToPDF(self, object, style, **params):
         """
         Convert the given object to a PDF file, possible using its subjects as necessary
         """
@@ -66,12 +66,13 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         export_file.write(export)
         export_file.close()
         
-        pdf = self.convertFSDirToPDF(os.path.join(tempdir, object.getId()), 'export.cnxml', **params)
+        zLOG.LOG('RhaptosPDFLatexTool',0, "module printing convertObjectToPDF")
+        pdf = self.convertFSDirToPDF(os.path.join(tempdir, object.getId()), 'export.cnxml', style, **params)
         shutil.rmtree(tempdir)
         return pdf
 
 
-    def convertFSDirToPDF(self, path, filename, **params):
+    def convertFSDirToPDF(self, path, filename, style = '', **params):
         """
         Produce a PDF from a directory on the filesystem
         """
@@ -100,6 +101,7 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         env['PROJECT_NAME'] = project_name
         env['PROJECT_SHORT_NAME'] = project_short_name
         env['EPUB_DIR'] = printtool.getEpubDir()
+        env['PRINT_STYLE'] = style
 
         script_location = 'SCRIPTSDIR' in env and env['SCRIPTSDIR'] or '.'
 
