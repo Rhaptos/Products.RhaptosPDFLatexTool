@@ -144,7 +144,7 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         # check for good PDF here. if not, do we set some property on callback object?
         # all our bad PDFs seem to have the problem of not ending on %%EOF so we check that
         # it's a nice light-weight check
-        if not (foundPDF and pdf.endswith("%%EOF\n")):
+        if not (foundPDF and ( pdf.endswith("%%EOF\n") or pdf.endswith("%%EOF\n\n") ) ):
             raise PDFLatexError, "Bad output file"
 
         zLOG.LOG('RhaptosPDFLatexTool',0, "module printing finished successfully in tempdir %s at %s in %s" % (path, now, datetime.now()-now) )
