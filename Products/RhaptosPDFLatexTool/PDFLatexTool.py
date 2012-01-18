@@ -50,12 +50,11 @@ class PDFLatexTool(UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'manage_overview')
     manage_overview = PageTemplateFile('zpt/explainPDFLatexTool', globals() )
 
-    def convertObjectToPDF(self, object, style, **params):
+    def convertObjectToPDF(self, object, **params):
         """
         Convert the given object to a PDF file, possible using its subjects as necessary
         """
         fs_tool = getToolByName(self, 'portal_fsimport')
-
         tempdir = tempfile.mkdtemp()
         fs_tool.exportToFS(tempdir, object)
 
@@ -66,13 +65,12 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         export_file.write(export)
         export_file.close()
         
-        zLOG.LOG('RhaptosPDFLatexTool',0, "module printing convertObjectToPDF")
-        pdf = self.convertFSDirToPDF(os.path.join(tempdir, object.getId()), 'export.cnxml', style, **params)
+        pdf = self.convertFSDirToPDF(os.path.join(tempdir, object.getId()), 'export.cnxml', **params)
         shutil.rmtree(tempdir)
         return pdf
 
 
-    def convertFSDirToPDF(self, path, filename, style = '', **params):
+    def convertFSDirToPDF(self, path, filename, **params):
         """
         Produce a PDF from a directory on the filesystem
         """
@@ -100,10 +98,6 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         env['HOST'] = host
         env['PROJECT_NAME'] = project_name
         env['PROJECT_SHORT_NAME'] = project_short_name
-        env['EPUB_DIR'] = printtool.getEpubDir()
-        env['PRINT_STYLE'] = style
-
-        script_location = 'SCRIPTSDIR' in env and env['SCRIPTSDIR'] or '.'
 
         # Should be setup inside zope.conf on Zope client
         if not env.has_key('PRINT_DIR'):
@@ -124,7 +118,7 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         now = datetime.now()
         zLOG.LOG('RhaptosPDFLatexTool',0, "module printing starts in tempdir %s at %s" % (path, now) )
         f.write(now.isoformat()+"\n")
-        subprocess.call(['sh', '%s/module2pdf.sh' % script_location, 'module.pdf'], cwd=path, env=env,
+        subprocess.call(['make', '-f', 'module_print.mak', '-e', 'module.pdf'], cwd=path, env=env,
                         stdout=f, stderr=subprocess.STDOUT)
         f.write(now.isoformat()+"\n")
         f.close()
@@ -144,7 +138,7 @@ class PDFLatexTool(UniqueObject, SimpleItem):
         # check for good PDF here. if not, do we set some property on callback object?
         # all our bad PDFs seem to have the problem of not ending on %%EOF so we check that
         # it's a nice light-weight check
-        if not (foundPDF and ( pdf.endswith("%%EOF\n") or pdf.endswith("%%EOF\n\n") ) ):
+        if not (foundPDF and pdf.endswith("%%EOF\n")):
             raise PDFLatexError, "Bad output file"
 
         zLOG.LOG('RhaptosPDFLatexTool',0, "module printing finished successfully in tempdir %s at %s in %s" % (path, now, datetime.now()-now) )
