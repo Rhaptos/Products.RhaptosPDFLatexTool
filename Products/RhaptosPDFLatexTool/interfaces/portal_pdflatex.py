@@ -15,12 +15,12 @@ class portal_pdflatex(Interface):
 
     id = Attribute('id','Must be set to "portal_pdflatex"')
 
-    def convertObjectToPDF(object, **params):
+    def convertObjectToPDF(object, style, **params):
         """
         Convert the given object to a PDF file, possible using its subjects as necessary
         """
 
-    def convertFSDirToPDF(path, filename, **params):
+    def convertFSDirToPDF(path, filename, style='', **params):
         """
         Produce a PDF from a directory on the filesystem
         """

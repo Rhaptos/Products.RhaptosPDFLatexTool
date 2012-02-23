@@ -1,5 +1,5 @@
 RhaptosPDFLatexTool-0.15
-  - modern textbook PDFs, using fop
+  - modern textbook PDFs
 
 RhaptosPDFLatexTool-0.14
   - generic setup refactor. Rhaptos 2.0 release
