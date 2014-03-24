@@ -93,8 +93,8 @@ class PDFLatexTool(UniqueObject, SimpleItem):
 
         project_name = portal.Title()
         project_short_name = project_name
-        if project_name == 'Connexions':
-              project_name = 'The Connexions Project'
+        if project_name == 'OpenStax CNX':
+              project_name = 'The OpenStax CNX Project'
 
         env = os.environ
         env['HOST'] = host
